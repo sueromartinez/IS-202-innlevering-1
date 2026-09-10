@@ -6,30 +6,32 @@ namespace FirstWebAppInDocker.Controllers;
 
 public class HomeController : Controller
 {
-    // Viser skjema-siden
-public IActionResult CorrectMap()
-{
-    return View();
-}
+    private static List<PositionModel> resources = new List<PositionModel>();
 
-// Tar imot dataene fra skjemaet
-[HttpPost]
-public IActionResult CorrectMap(PositionModel model)
-{
-    if (ModelState.IsValid)
+    // Viser skjema-siden for å registrere ressurs
+    public IActionResult RegisterResource()
     {
-        positions.Add(model);
-        return View("CorrectionOverview", positions);
+        return View();
     }
-    return View(model);
-}
 
-// Viser oversikts-siden
-public IActionResult CorrectionOverview()
-{
-    return View(positions);
-}
-    private static List<PositionModel> positions = new List<PositionModel>();
+    // Tar imot dataene fra skjemaet
+    [HttpPost]
+    public IActionResult RegisterResource(PositionModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            resources.Add(model);
+            return RedirectToAction("ResourceOverview");
+        }
+        return View(model);
+    }
+
+    // Viser oversikts-siden med alle registrerte ressurser
+    public IActionResult ResourceOverview()
+    {
+        return View(resources);
+    }
+
     public IActionResult Index()
     {
         return View();
